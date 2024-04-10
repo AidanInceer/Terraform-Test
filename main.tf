@@ -18,8 +18,8 @@ resource "google_compute_network" "vpc_network" {
 }
 
 
-resource "google_storage_bucket" "example-bucket-" {
-  name          = "example-bucket"
+resource "google_storage_bucket" "example-bucket-ai-terraform-test" {
+  name          = "example-bucket-ai-terraform-test"
   location      = var.region
   force_destroy = true
   labels = {
