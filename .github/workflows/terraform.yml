@@ -2,11 +2,9 @@ name: Terraform
 
 on:
   pull_request:
-    branches: ["main", "develop"]
-  push:
-    branches: ["main", "develop"]
+
 jobs:
-  deploy:
+  Validate:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -46,6 +44,17 @@ jobs:
         with:
           name: tf-plan
           path: ./tfplan
-#     - name: Terraform Apply
-#       id: apply
-#       run: terraform apply -auto-approve -input=false
+
+      - name: Comment Plan
+        id: comment-plan
+        uses: peter-evans/create-or-update-comment@v2
+        with:
+          issue-number: 1
+          body: |
+            Terraform Plan:
+      
+            ```
+            ${{ steps.plan.outputs.plan }}
+            ```
+      
+            Plan saved to GH artifacts.
