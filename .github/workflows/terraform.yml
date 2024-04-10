@@ -40,7 +40,9 @@ jobs:
       - name: Terraform Plan
         id: Plan
         run: |
-          terraform plan -out=tfplan >> $GITHUB_OUTPUT
+          echo 'plan<<EOF' >> $GITHUB_OUTPUT
+          terraform plan  -out=tfplan >> $GITHUB_OUTPUT
+          echo 'EOF' >> $GITHUB_OUTPUT
 
       - name: Save Artifact
         id: save-artifact
