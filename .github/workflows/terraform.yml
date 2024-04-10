@@ -40,7 +40,7 @@ jobs:
       - name: Terraform Plan
         id: Plan
         run: |
-          terraform plan -no-color -out=tfplan
+          terraform plan -out=tfplan >> $GITHUB_OUTPUT
 
       - name: Save Artifact
         id: save-artifact
