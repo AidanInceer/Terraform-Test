@@ -46,12 +46,5 @@ jobs:
           name: tf-plan
           path: ./tfplan
 
-  Apply:
-    runs-on: ubuntu-latest
-    needs: Deploy
-    if: github.event_name == 'pull_request'
-
-    steps:
       - name: Apply Terraform Changes
-        if: steps.approved.outputs.data != '[]'
         run: terraform apply
