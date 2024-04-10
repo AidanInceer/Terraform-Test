@@ -1,6 +1,6 @@
-variable "project" {}
-
-variable "credentials_file" {}
+variable "project" {
+  default = "ai-data-warehousing"
+}
 
 variable "region" {
   default = "europe-west2"
