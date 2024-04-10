@@ -70,7 +70,4 @@ jobs:
         run: terraform init
 
       - name: Apply Terraform Changes
-        run: terraform apply
-
-
-        # test
+        run: terraform apply -auto-approve
