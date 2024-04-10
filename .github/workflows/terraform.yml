@@ -22,9 +22,6 @@ jobs:
         with:
           credentials_json: "${{ secrets.GOOGLE_CREDENTIALS }}"
 
-      - name: "Set up Cloud SDK"
-        uses: "google-github-actions/setup-gcloud@v0.6.0"
-
       - name: Terraform Init
         id: init
         run: terraform init
@@ -34,15 +31,14 @@ jobs:
         run: terraform validate
 
       - name: Terraform fmt
-        id: fmt
+        id: format
         run: terraform fmt -check
 
       - name: Terraform Plan
-        id: Plan
+        id: plan
         run: |
-          echo 'plan<<EOF' >> $GITHUB_OUTPUT
-          terraform plan  -out=tfplan >> $GITHUB_OUTPUT
-          echo 'EOF' >> $GITHUB_OUTPUT
+          terraform plan  -out=tfplan
+          terraform show tfplan
 
       - name: Save Artifact
         id: save-artifact
