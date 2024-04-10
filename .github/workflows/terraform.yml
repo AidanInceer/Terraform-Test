@@ -53,9 +53,4 @@ jobs:
           issue-number: 1
           body: |
             Terraform Plan:
-
-            ```
-            ${{ steps.plan.outputs }}
-            ```
-
             Plan saved to GH artifacts.
