@@ -45,6 +45,11 @@ jobs:
         with:
           name: tf-plan
           path: ./tfplan
+
+      - name: event_name
+        id: event_name
+        run: |
+          echo ${{github.event_name}}
   Apply:
     runs-on: ubuntu-latest
     needs: deploy
