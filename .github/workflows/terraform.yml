@@ -52,21 +52,6 @@ jobs:
     if: github.event_name == 'pull_request'
 
     steps:
-      - name: Wait for approval
-        uses: octokit/request-action@v2.x
-        id: approved
-        with:
-          route: GET /repos/:owner/:repo/pulls/:pull_number/reviews
-          owner: ${{ github.repository_owner }}
-          repo: ${{ github.event.repository.name }}
-          pull_number: ${{ github.event.number }}
-          reviewers: ${{ github.actor }}
-          state: approved
-          per_page: 100
-          token: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Apply Terraform Changes
         if: steps.approved.outputs.data != '[]'
-        run: terraform apply --auto-approve
-
-        # aas
+        run: terraform apply
