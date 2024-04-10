@@ -48,18 +48,6 @@ jobs:
         with:
           name: tf-plan
           path: ./tfplan
-
-      - name: Comment Plan
-        id: comment-plan
-        uses: peter-evans/create-or-update-comment@v2
-        with:
-          body: |
-            Terraform Plan:
-            ```
-            ${{ steps.plan.outputs.plan }}
-            ```
-            Plan saved to GH artifacts.
-
 #     - name: Terraform Apply
 #       id: apply
 #       run: terraform apply -auto-approve -input=false
