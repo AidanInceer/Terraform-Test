@@ -1,25 +1,9 @@
-resource "google_bigquery_dataset" "bronze_layer" {
-  dataset_id                 = "bronze_layer"
-  friendly_name              = "bronze"
-  description                = "dataset for raw data to be ingested"
-  location                   = var.region
-  delete_contents_on_destroy = true
+resource "google_bigquery_dataset" "datasets" {
+  for_each = { for idx, name in var.dataset_names : name => idx }
 
-}
-
-resource "google_bigquery_dataset" "silver_layer" {
-  dataset_id                 = "silver_layer"
-  friendly_name              = "silver"
-  description                = "Filtered cleaned and augmenteded data"
-  location                   = var.region
-  delete_contents_on_destroy = true
-
-}
-
-resource "google_bigquery_dataset" "gold_layer" {
-  dataset_id                 = "gold_layer"
-  friendly_name              = "gold"
-  description                = "business level aggregations"
+  dataset_id                 = "${each.key}_layer"
+  friendly_name              = each.key
+  description                = var.dataset_descriptions[each.key]
   location                   = var.region
   delete_contents_on_destroy = true
 

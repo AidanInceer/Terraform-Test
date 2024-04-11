@@ -17,3 +17,20 @@ variable "bucket_default_label" {
 variable "retention_period" {
   default = 2592000
 }
+
+
+variable "dataset_names" {
+  description = "List of dataset names"
+  type        = list(string)
+  default     = ["bronze", "silver", "gold"]
+}
+
+variable "dataset_descriptions" {
+  description = "Map of dataset descriptions"
+  type        = map(string)
+  default = {
+    bronze = "Description for bronze dataset"
+    silver = "Description for silver dataset"
+    gold   = "Description for gold dataset"
+  }
+}
