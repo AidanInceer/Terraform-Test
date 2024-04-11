@@ -17,17 +17,15 @@ resource "google_compute_network" "vpc_network" {
   name = var.vpc_name
 }
 
+terraform {
+  backend "gcs" {
+    bucket = "f8ccfab9a895324b-bucket-tfstate"
+    prefix = "terraform/state"
+  }
+}
 
-resource "google_storage_bucket" "example-bucket-ai-terraform-test" {
-  name          = "example-bucket-ai-terraform-test"
-  location      = var.region
-  force_destroy = true
-  labels = {
-    "bucket" = "terraform-bucket"
-  }
-  retention_policy {
-    retention_period = 2592000
-  }
+module "gcp-gcs-buckets" {
+  source = "./modules/gcp-gcs-terraformed-buckets"
 }
 
 resource "random_id" "bucket_prefix" {
@@ -44,9 +42,4 @@ resource "google_storage_bucket" "default" {
   }
 }
 
-terraform {
-  backend "gcs" {
-    bucket = "f8ccfab9a895324b-bucket-tfstate"
-    prefix = "terraform/state"
-  }
-}
+
