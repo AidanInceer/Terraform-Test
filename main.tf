@@ -28,6 +28,10 @@ module "gcp-gcs-buckets" {
   source = "./modules/gcp-gcs-terraformed-buckets"
 }
 
+module "gcp-bigquery" {
+  source = "./modules/gcp-bigquery"
+}
+
 resource "random_id" "bucket_prefix" {
   byte_length = 8
 }
