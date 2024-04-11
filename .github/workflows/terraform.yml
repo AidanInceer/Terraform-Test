@@ -2,9 +2,11 @@ name: Terraform
 
 on:
   pull_request:
+    branches: ["main", "develop"]
 
 jobs:
-  Validate:
+  Plan:
+    environment: "dev"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -45,16 +47,27 @@ jobs:
           name: tf-plan
           path: ./tfplan
 
-      - name: Comment Plan
-        id: comment-plan
-        uses: peter-evans/create-or-update-comment@v2
+  Apply:
+    environment: "prod"
+    runs-on: ubuntu-latest
+    needs: ["Plan"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: hashicorp/setup-terraform@v3
         with:
-          issue-number: 1
-          body: |
-            Terraform Plan:
-      
-            ```
-            ${{ steps.plan.outputs.plan }}
-            ```
-      
-            Plan saved to GH artifacts.
+          terraform_version: 1.7.5
+          terraform_wrapper: false
+
+      - name: GCP Auth
+        id: auth
+        uses: "google-github-actions/auth@v1"
+        with:
+          credentials_json: "${{ secrets.GOOGLE_CREDENTIALS }}"
+
+      - name: Terraform Init
+        id: init
+        run: terraform init
+
+      - name: Apply Terraform Changes
+        run: terraform apply -auto-approve

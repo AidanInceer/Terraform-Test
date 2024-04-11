@@ -17,15 +17,33 @@ resource "google_compute_network" "vpc_network" {
   name = var.vpc_name
 }
 
-
-resource "google_storage_bucket" "example-bucket-" {
-  name          = "example-bucket"
-  location      = var.region
-  force_destroy = true
-  labels = {
-    "bucket" = "terraform-bucket"
-  }
-  retention_policy {
-    retention_period = 2592000
+terraform {
+  backend "gcs" {
+    bucket = "f8ccfab9a895324b-bucket-tfstate"
+    prefix = "terraform/state"
   }
 }
+
+module "gcp-gcs-buckets" {
+  source = "./modules/gcp-gcs-terraformed-buckets"
+}
+
+module "gcp-bigquery" {
+  source = "./modules/gcp-bigquery"
+}
+
+resource "random_id" "bucket_prefix" {
+  byte_length = 8
+}
+
+resource "google_storage_bucket" "default" {
+  name          = "${random_id.bucket_prefix.hex}-bucket-tfstate"
+  force_destroy = false
+  location      = var.region
+  storage_class = "STANDARD"
+  versioning {
+    enabled = true
+  }
+}
+
+
