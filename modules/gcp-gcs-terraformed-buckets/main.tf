@@ -12,7 +12,7 @@ resource "google_storage_bucket" "example-bucket-ai-terraform-test-2" {
 
 
 resource "google_storage_bucket" "example-bucket-ai-terraform-test-3" {
-  name          = "example-bucket-ai-terraform-test-2"
+  name          = "example-bucket-ai-terraform-test-3"
   location      = var.region
   force_destroy = true
   labels = {
